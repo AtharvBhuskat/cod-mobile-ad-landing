@@ -94,6 +94,148 @@ a { text-decoration: none; color: inherit; }
   pointer-events: none;
 }
 
+/* skyline silhouette along hero bottom */
+.skyline {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  width: 100%;
+  height: 22vh;
+  min-height: 140px;
+  z-index: -1;
+  opacity: 0.55;
+}
+.skyline polygon {
+  fill: #05070a;
+}
+
+/* flying helicopter */
+.chopper {
+  position: absolute;
+  top: 14%;
+  left: -10%;
+  font-size: 2.4rem;
+  z-index: 0;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6));
+  animation: fly-across 16s linear infinite;
+}
+@keyframes fly-across {
+  0%   { left: -10%; transform: translateY(0) scaleX(1); }
+  48%  { left: 105%; transform: translateY(-10px) scaleX(1); }
+  50%  { left: 105%; transform: translateY(-10px) scaleX(-1); }
+  98%  { left: -10%; transform: translateY(10px) scaleX(-1); }
+  100% { left: -10%; transform: translateY(10px) scaleX(1); }
+}
+
+/* paratroopers dropping */
+.paratroopers {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+.paratroopers span {
+  position: absolute;
+  top: -8%;
+  font-size: 1.6rem;
+  opacity: 0.85;
+  animation: drop-down 9s linear infinite;
+}
+@keyframes drop-down {
+  0%   { top: -8%; transform: translateX(0) rotate(-4deg); }
+  25%  { transform: translateX(10px) rotate(4deg); }
+  50%  { transform: translateX(-10px) rotate(-4deg); }
+  75%  { transform: translateX(10px) rotate(4deg); }
+  100% { top: 78%; transform: translateX(0) rotate(-4deg); opacity: 0.9; }
+}
+
+/* radar sweep in the corner */
+.radar {
+  position: absolute;
+  top: 100px;
+  right: 40px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,176,32,0.35);
+  background: radial-gradient(circle, rgba(255,176,32,0.08), transparent 70%);
+  overflow: hidden;
+  z-index: 0;
+}
+.radar::before, .radar::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255,176,32,0.2);
+}
+.radar::before { inset: 15px; }
+.radar::after { inset: 30px; }
+.radar-sweep {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(from 0deg, rgba(255,176,32,0.65), transparent 35%);
+  animation: spin 3s linear infinite;
+}
+.radar-blip {
+  position: absolute;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  top: 30%;
+  left: 62%;
+  box-shadow: 0 0 6px 2px rgba(255,176,32,0.7);
+  animation: blip 3s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes blip {
+  0%, 15% { opacity: 1; }
+  20%, 100% { opacity: 0; }
+}
+
+/* diagonal light sweep across the whole banner */
+.light-sweep {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.light-sweep::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 30%;
+  height: 200%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.06), transparent);
+  animation: sweep 6s ease-in-out infinite;
+}
+@keyframes sweep {
+  0% { transform: translateX(-100%); }
+  40%, 100% { transform: translateX(500%); }
+}
+
+/* staggered title line entrance */
+.hero h1 .line {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: line-in 0.7s ease forwards;
+  animation-delay: calc(var(--d) * 0.15s + 0.1s);
+}
+@keyframes line-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+/* the glitch line needs both the entrance animation and the flicker loop */
+.hero h1 .line.glitch {
+  animation-name: line-in, flicker;
+  animation-duration: 0.7s, 4s;
+  animation-timing-function: ease, ease-in-out;
+  animation-fill-mode: forwards, none;
+  animation-iteration-count: 1, infinite;
+  animation-delay: calc(var(--d) * 0.15s + 0.1s), 1s;
+}
+
 /* glitch flicker on hero accent word */
 .glitch {
   position: relative;
@@ -350,4 +492,7 @@ section h2 {
   .gallery-grid { grid-template-columns: 1fr; grid-template-rows: none; height: auto; }
   .main-video { height: 260px; }
   .shot { height: 120px; }
+  .radar { width: 60px; height: 60px; top: 80px; right: 16px; }
+  .chopper { font-size: 1.6rem; }
+  .skyline { height: 14vh; }
 }
