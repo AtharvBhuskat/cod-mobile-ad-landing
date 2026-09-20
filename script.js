@@ -10,13 +10,6 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   });
 });
 
-const playBtn = document.getElementById('playBtn');
-if (playBtn) {
-  playBtn.addEventListener('click', () => {
-    alert('Trailer playback is a demo placeholder — plug in a real video source here.');
-  });
-}
-
 // subtle fade-in on scroll
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
@@ -121,4 +114,89 @@ if (canvas) {
   window.addEventListener('resize', init);
   init();
   draw();
+}
+
+// self-playing "live" trailer preview — a looping animated canvas scene,
+// not a real video file, so it autoplays with no click and no asset to load
+const trailerCanvas = document.getElementById('trailerCanvas');
+if (trailerCanvas) {
+  const tctx = trailerCanvas.getContext('2d');
+  const trailerBox = trailerCanvas.closest('.main-video');
+  let embers = [];
+  let scanY = 0;
+  let flash = 0;
+  let nextFlashAt = 0;
+  let chopperX = -0.2;
+
+  function resizeTrailer() {
+    trailerCanvas.width = trailerBox.offsetWidth;
+    trailerCanvas.height = trailerBox.offsetHeight;
+  }
+
+  function makeEmber() {
+    return {
+      x: Math.random() * trailerCanvas.width,
+      y: trailerCanvas.height + Math.random() * 20,
+      r: Math.random() * 1.8 + 0.4,
+      speed: Math.random() * 0.5 + 0.15
+    };
+  }
+
+  function initTrailer() {
+    resizeTrailer();
+    embers = Array.from({ length: 30 }, makeEmber);
+    nextFlashAt = performance.now() + 1500 + Math.random() * 2000;
+  }
+
+  function drawTrailer(now) {
+    const w = trailerCanvas.width;
+    const h = trailerCanvas.height;
+
+    tctx.fillStyle = '#0a0d12';
+    tctx.fillRect(0, 0, w, h);
+
+    const grad = tctx.createRadialGradient(w * 0.7, h * 0.4, 0, w * 0.7, h * 0.4, w * 0.7);
+    grad.addColorStop(0, 'rgba(255,59,48,0.10)');
+    grad.addColorStop(1, 'rgba(10,13,18,0)');
+    tctx.fillStyle = grad;
+    tctx.fillRect(0, 0, w, h);
+
+    embers.forEach(p => {
+      p.y -= p.speed;
+      if (p.y < -5) Object.assign(p, makeEmber(), { y: h + 5 });
+      tctx.beginPath();
+      tctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      tctx.fillStyle = 'rgba(255,176,32,0.6)';
+      tctx.fill();
+    });
+
+    chopperX += 0.0025;
+    if (chopperX > 1.2) chopperX = -0.2;
+    tctx.font = `${Math.max(18, w * 0.09)}px sans-serif`;
+    tctx.fillText('🚁', chopperX * w, h * 0.28);
+
+    if (now >= nextFlashAt) {
+      flash = 1;
+      nextFlashAt = now + 2500 + Math.random() * 3000;
+    }
+    if (flash > 0) {
+      tctx.fillStyle = `rgba(255,176,32,${flash * 0.35})`;
+      tctx.fillRect(0, 0, w, h);
+      flash -= 0.04;
+    }
+
+    scanY = (scanY + 1) % (h + 24);
+    tctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    tctx.lineWidth = 24;
+    tctx.beginPath();
+    tctx.moveTo(0, scanY - 12);
+    tctx.lineTo(w, scanY - 12);
+    tctx.stroke();
+
+    requestAnimationFrame(drawTrailer);
+  }
+
+  window.addEventListener('resize', resizeTrailer);
+  initTrailer();
+  requestAnimationFrame(drawTrailer);
 }
