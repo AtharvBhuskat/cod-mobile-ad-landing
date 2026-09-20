@@ -44,6 +44,70 @@
       <polygon points="0,200 0,140 60,140 60,100 120,100 120,150 180,150 180,80 210,80 210,150 260,150 260,110 320,110 320,160 380,160 380,90 420,90 420,160 480,160 480,120 540,120 540,170 600,170 600,100 650,100 650,170 720,170 720,130 780,130 780,160 840,160 840,95 900,95 900,165 960,165 960,125 1020,125 1020,170 1080,170 1080,105 1140,105 1140,160 1200,160 1200,200" />
     </svg>
 
+    <!-- combat scene banner: explosions, smoke, tracers, soldier silhouettes -->
+    <svg class="combat-banner" viewBox="0 0 1600 700" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="fadeLeft" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+          <stop offset="40%" stop-color="#fff" stop-opacity="0.25"/>
+          <stop offset="65%" stop-color="#fff" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#fff" stop-opacity="1"/>
+        </linearGradient>
+        <mask id="fadeMask">
+          <rect x="0" y="0" width="1600" height="700" fill="url(#fadeLeft)"/>
+        </mask>
+        <radialGradient id="explosionCore" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#fff6d8"/>
+          <stop offset="35%" stop-color="#ffb020"/>
+          <stop offset="70%" stop-color="#ff3b30"/>
+          <stop offset="100%" stop-color="#ff3b30" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="blurSmoke" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="14"/>
+        </filter>
+      </defs>
+
+      <g mask="url(#fadeMask)">
+        <g class="smoke smoke-1" filter="url(#blurSmoke)">
+          <ellipse cx="1300" cy="340" rx="140" ry="90" fill="#2a2f38" opacity="0.55"/>
+        </g>
+        <g class="smoke smoke-2" filter="url(#blurSmoke)">
+          <ellipse cx="1520" cy="230" rx="110" ry="70" fill="#3a3f48" opacity="0.45"/>
+        </g>
+
+        <g class="explosion" transform="translate(1300,320)">
+          <g class="explosion-pulse">
+            <circle r="70" fill="url(#explosionCore)"/>
+            <polygon points="0,-95 14,-30 80,-40 26,4 46,70 0,32 -46,70 -26,4 -80,-40 -14,-30" fill="#ffb020" opacity="0.7"/>
+          </g>
+        </g>
+        <g class="explosion" transform="translate(1520,210) scale(0.55)">
+          <g class="explosion-pulse delay2">
+            <circle r="70" fill="url(#explosionCore)"/>
+            <polygon points="0,-95 14,-30 80,-40 26,4 46,70 0,32 -46,70 -26,4 -80,-40 -14,-30" fill="#ffb020" opacity="0.7"/>
+          </g>
+        </g>
+
+        <line class="tracer tracer-1" x1="900" y1="650" x2="1400" y2="320" stroke="#ffe9b0" stroke-width="3"/>
+        <line class="tracer tracer-2" x1="1050" y1="680" x2="1540" y2="280" stroke="#ffe9b0" stroke-width="2"/>
+
+        <!-- distant standing soldier -->
+        <g transform="translate(1540,470) scale(0.75)" fill="#05070a" opacity="0.9">
+          <circle cx="0" cy="-88" r="9"/>
+          <path d="M -8,-78 L 10,-76 L 14,-50 L 24,-20 L 14,-18 L 6,-42 L -2,-20 L -14,-46 L -18,-20 L -28,-18 L -20,-50 L -14,-76 Z"/>
+          <path d="M 8,-74 L 44,-70 L 44,-64 L 12,-66 Z"/>
+        </g>
+
+        <!-- foreground crouched soldier aiming -->
+        <g transform="translate(1370,590) scale(1.15)" fill="#05070a">
+          <circle cx="0" cy="-84" r="10"/>
+          <path d="M -10,-72 C -14,-55 -12,-40 -16,-26 L -28,-4 L -18,-2 L -6,-24 L -2,-24 L 2,-2 L 12,-2 L 6,-30 C 10,-45 14,-58 8,-72 Z"/>
+          <path d="M 6,-70 L 46,-64 L 46,-58 L 10,-62 Z"/>
+          <path d="M -6,-70 L -20,-66 L -20,-72 L -8,-74 Z"/>
+        </g>
+      </g>
+    </svg>
+
     <!-- radar sweep -->
     <div class="radar">
       <div class="radar-sweep"></div>

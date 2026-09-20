@@ -108,6 +108,50 @@ a { text-decoration: none; color: inherit; }
   fill: #05070a;
 }
 
+/* combat scene banner: explosions, smoke, tracers, soldiers */
+.combat-banner {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+.explosion-pulse {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: explode-pulse 2.2s ease-in-out infinite;
+}
+.explosion-pulse.delay2 {
+  animation-duration: 2.6s;
+  animation-delay: 1.1s;
+}
+@keyframes explode-pulse {
+  0%, 100% { transform: scale(0.85); opacity: 0.85; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+.smoke {
+  animation: smoke-drift 11s ease-in-out infinite alternate;
+}
+.smoke-2 {
+  animation-duration: 14s;
+  animation-delay: 2s;
+}
+@keyframes smoke-drift {
+  from { transform: translate(-10px, 0); }
+  to   { transform: translate(20px, -14px); }
+}
+.tracer {
+  opacity: 0;
+  filter: drop-shadow(0 0 4px rgba(255,220,150,0.8));
+  animation: tracer-flash 3s linear infinite;
+}
+.tracer-1 { animation-delay: 0.4s; }
+.tracer-2 { animation-delay: 1.8s; }
+@keyframes tracer-flash {
+  0%, 92%, 100% { opacity: 0; }
+  93%, 96% { opacity: 1; }
+}
+
 /* flying helicopter */
 .chopper {
   position: absolute;
@@ -495,4 +539,5 @@ section h2 {
   .radar { width: 60px; height: 60px; top: 80px; right: 16px; }
   .chopper { font-size: 1.6rem; }
   .skyline { height: 14vh; }
+  .combat-banner { display: none; }
 }
